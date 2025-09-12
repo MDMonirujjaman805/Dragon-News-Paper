@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import LatestNews from "../components/LatestNews";
 import Navbar from "../components/Navbar";
 import LeftAside from "./LeftAside";
+import RightAisde from "./RightAisde";
 
 const MainLayout = () => {
   return (
@@ -19,13 +20,19 @@ const MainLayout = () => {
       </nav>
 
       {/* Main */}
-      <main className="grid md:grid-cols-12 gap-3 mt-10">
-        <aside className="col-span-3"><LeftAside/></aside>
-        <main className="col-span-6">Main Section</main>
-        <aside className="col-span-3">Right Aside</aside>
-      </main>
+      <main className="grid md:grid-cols-12 gap-5 mt-10">
+        <aside className="col-span-3">
+          <LeftAside />
+        </aside>
 
-      <Outlet></Outlet>
+        <section className="col-span-6">
+          <Outlet />
+        </section>
+
+        <aside className="col-span-3">
+          <RightAisde />
+        </aside>
+      </main>
     </div>
   );
 };

@@ -1,41 +1,53 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import MainLayout from "../layouts/MainLayout";
-import News from "../components/News";
 import About from "../components/About";
-// import Login from "../pages/Login";
 import Career from "../components/Career";
-// import Register from "../pages/Register";
 import AuthForm from "../pages/LoginForm";
+import CategoryNews from "../pages/CategoryNews";
+import ErrorPage from "../components/ErrorPage";
+import SingleNews from "../pages/SingleNews";
 
 export const Routes = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
+    errorElement: <ErrorPage/>,
     children: [
       {
-        path: "news",
-        element: <News />,
+        path: "",
+        element: <Navigate to={"/category/01"} />,
       },
       {
-        path: "about",
-        element: <About />,
+        path: "/category/:id",
+        element: <CategoryNews />,
+        loader: ({ params }) =>
+          fetch(
+            `https://openapi.programming-hero.com/api/news/category/${params.id}`
+          ),
       },
-      {
-        path: "career",
-        element: <Career />,
+
+       {
+        path: "/news/:id",
+        element: <SingleNews />,
+        loader: ({ params }) =>
+          fetch(
+            `https://openapi.programming-hero.com/api/news/${params.id}`
+          ),
       },
+
     ],
   },
-//   {
-//     path: "/login/register/login",
-//     element: <Login />,
-//   },
-//   {
-//     path: "/login/register",
-//     element: <Register />,
-//   },
+  {
+    path: "about",
+    element: <About />,
+  },
+  {
+    path: "career",
+    element: <Career />,
+  },
   {
     path: "login",
     element: <AuthForm />,
   },
 ]);
+
