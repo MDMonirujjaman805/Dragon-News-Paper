@@ -13,7 +13,7 @@ export default function ErrorPage() {
       </p>
       <a
         href="/"
-        className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+        className="mt-6 px-4 py-2 bg-black text-white rounded-lg"
       >
         Go Back Home
       </a>

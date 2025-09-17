@@ -6,12 +6,15 @@ import AuthForm from "../pages/LoginForm";
 import CategoryNews from "../pages/CategoryNews";
 import ErrorPage from "../components/ErrorPage";
 import SingleNews from "../pages/SingleNews";
+import AuthLayout from "../layouts/AuthLayout";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 export const Routes = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    errorElement: <ErrorPage/>,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "",
@@ -25,17 +28,19 @@ export const Routes = createBrowserRouter([
             `https://openapi.programming-hero.com/api/news/category/${params.id}`
           ),
       },
-
-       {
-        path: "/news/:id",
-        element: <SingleNews />,
-        loader: ({ params }) =>
-          fetch(
-            `https://openapi.programming-hero.com/api/news/${params.id}`
-          ),
-      },
-
+      // {
+      //   path: "/news/:id",
+      //   element: <SingleNews />,
+      //   loader: ({ params }) =>
+      //     fetch(`https://openapi.programming-hero.com/api/news/${params.id}`),
+      // },
     ],
+  },
+  {
+    path: "/news/:id",
+    element: <SingleNews />,
+    loader: ({ params }) =>
+      fetch(`https://openapi.programming-hero.com/api/news/${params.id}`),
   },
   {
     path: "about",
@@ -46,8 +51,21 @@ export const Routes = createBrowserRouter([
     element: <Career />,
   },
   {
-    path: "login",
+    path: "authform",
     element: <AuthForm />,
   },
+  {
+    path: "auth",
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "/auth/login",
+        element: <Login />,
+      },
+      {
+        path: "/auth/register",
+        element: <Register />,
+      },
+    ],
+  },
 ]);
-

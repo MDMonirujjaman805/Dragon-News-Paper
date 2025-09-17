@@ -1,5 +1,8 @@
 import { NavLink } from "react-router";
-import user from "../assets/user.png";
+import pic from "../assets/user.png";
+// import { useContext } from "react";
+import { use } from "react";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Navbar = () => {
   const links = (
@@ -15,9 +18,23 @@ const Navbar = () => {
       </button>
     </>
   );
+  // const {user}=useContext(AuthContext)
+  const { user, logOutUser } = use(AuthContext);
 
+  const handleSignOut = () => {
+    logOutUser()
+      .then(() => {
+        // Sign-out successful.
+        alert("You are Sign Out Successful.");
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log(error);
+      });
+  };
   return (
     <div className="navbar bg-base-100 shadow-sm">
+      <div>{user && user?.email}</div>
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -49,10 +66,16 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
       <div className="navbar-end gap-2.5">
-        <img src={user} alt="user" />
-        <NavLink to="/login" className="btn bg-black text-white">
-          Login
-        </NavLink>
+        <img src={pic} alt="user" />
+        {user ? (
+          <button onClick={handleSignOut} className="btn bg-black text-white">
+            Log Out
+          </button>
+        ) : (
+          <NavLink to="/auth/login" className="btn bg-black text-white">
+            Login
+          </NavLink>
+        )}
       </div>
     </div>
   );
