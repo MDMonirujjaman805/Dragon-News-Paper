@@ -1,10 +1,12 @@
 import Navbar from "../components/Navbar";
-import { NavLink, Outlet } from "react-router";
-import { useContext } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router";
+import { useContext, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 
 const Register = () => {
-  const { createNewUser, setUser } = useContext(AuthContext);
+  const { createNewUser, setUser, updateUserProfile } = useContext(AuthContext);
+  const [error, setError] = useState({});
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,18 +16,39 @@ const Register = () => {
     const email = form.get("email");
     const password = form.get("password");
     const photo = form.get("photo ");
-    console.log({ name, email, photo, password });
+    // console.log({ name, email, photo, password });
+    // password validation
+    if (password.length < 8) {
+      setError({
+        ...error,
+        password: "Password must be more the 8 character long.",
+      });
+      return;
+    }
+
     // Create User
     createNewUser(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         setUser(user);
-        console.log(user);
+        updateUserProfile({
+          displayName: name,
+          photoURL: photo,
+        })
+          .then(() => {
+            navigate("/");
+          })
+          // eslint-disable-next-line no-unused-vars
+          .catch((err) => {
+            // console.log(err);
+          });
       })
       .catch((error) => {
+        // eslint-disable-next-line no-unused-vars
         const errorCode = error.code;
+        // eslint-disable-next-line no-unused-vars
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        // console.log(errorCode, errorMessage);
       });
   };
 
@@ -94,6 +117,12 @@ const Register = () => {
               placeholder="Enter your password"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black"
             />
+            {/* password validation */}
+            {error.password && (
+              <label className="label text-xs text-red-500">
+                {error.password}
+              </label>
+            )}
           </div>
 
           {/* Register Button */}

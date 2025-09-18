@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 import pic from "../assets/user.png";
+import ross from "../assets/ross.jpg"
 // import { useContext } from "react";
 import { use } from "react";
 import { AuthContext } from "../providers/AuthProvider";
@@ -27,14 +28,15 @@ const Navbar = () => {
         // Sign-out successful.
         alert("You are Sign Out Successful.");
       })
+      // eslint-disable-next-line no-unused-vars
       .catch((error) => {
         // An error happened.
-        console.log(error);
+       
       });
   };
   return (
     <div className="navbar bg-base-100 shadow-sm">
-      <div>{user && user?.email}</div>
+      <div className="text-xl font-semibold cursor-pointer">{user && user?.displayName}</div>
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -66,7 +68,12 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
       <div className="navbar-end gap-2.5">
-        <img src={pic} alt="user" />
+        {
+          user && user?.email ? <div>
+            <img className="w-10 h-10 rounded-full " src={ross} alt="Pic" />
+          </div>:<img src={pic} alt="user" />
+        }
+        
         {user ? (
           <button onClick={handleSignOut} className="btn bg-black text-white">
             Log Out

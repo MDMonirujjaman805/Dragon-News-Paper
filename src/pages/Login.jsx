@@ -1,10 +1,13 @@
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router";
 import Navbar from "../components/Navbar";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 
 const Login = () => {
-  const { logInUser } = useContext(AuthContext);
+  const { logInUser,setUser } = useContext(AuthContext);
+  const [error,setError] = useState({})
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const handleLogIn = (e) => {
     e.preventDefault();
@@ -14,20 +17,23 @@ const Login = () => {
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log({ email, password });
+    // console.log({ email, password });
 
     logInUser(email,password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
+        // console.log(user);
+        setUser(user)
+        navigate(location?.state? location.state:"/")
         alert("you are logged In.")
         // ...
       })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert(errorCode,errorMessage);
+      .catch((err) => {
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        setError({...error, login: err.code })
+        // alert(errorCode,errorMessage);
       });
   };
 
@@ -71,6 +77,12 @@ const Login = () => {
               placeholder="Enter your password"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
             />
+          {/* Forgot Password */}
+          <div>
+            {error.login && <label className="label text-xs text-red-500 mb-5">{error.login}</label>}
+            <br />
+            <label><a href="#" className="link-hover">Forgot Password?</a></label>
+          </div>
           </div>
 
           {/* <!-- Login Button --> */}

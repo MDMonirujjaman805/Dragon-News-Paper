@@ -9,6 +9,7 @@ import SingleNews from "../pages/SingleNews";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import PraivateRoute from "./PraivateRoute";
 
 export const Routes = createBrowserRouter([
   {
@@ -38,7 +39,11 @@ export const Routes = createBrowserRouter([
   },
   {
     path: "/news/:id",
-    element: <SingleNews />,
+    element: (
+      <PraivateRoute>
+        <SingleNews />
+      </PraivateRoute>
+    ),
     loader: ({ params }) =>
       fetch(`https://openapi.programming-hero.com/api/news/${params.id}`),
   },

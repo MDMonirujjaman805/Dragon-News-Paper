@@ -18,9 +18,10 @@ export default function SingleNews() {
 
   return (
     <div>
-      {/* Header */}
-      <Header />
-
+      <header className="text-center w-10/12 mx-auto">
+        {/* Header */}
+        <Header />
+      </header>
       <main className="w-10/12 mx-auto grid grid-cols-12 gap-5  mt-10 bg-white shadow-md rounded-xl overflow-hidden border border-gray-200 p-6">
         {/* body */}
         <section className="col-span-9">
